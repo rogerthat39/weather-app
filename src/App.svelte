@@ -1,5 +1,6 @@
 <script>
 	import DetailedSection from './Detail.svelte'
+	import WeatherCard from './Card.svelte'
 
 	export let api_url
 
@@ -61,93 +62,13 @@
 			console.log(err)
 		})
 	}
-
-	function showDetails(id) {
-		//update detailed view
-		currentSelected = id
-
-		//remove selected class from previous clicked div
-		let oldSelected = document.getElementsByClassName('selected')
-		for (let i = 0; i < oldSelected.length; i++) {
-			oldSelected[i].classList.remove('selected')
-		}
-		//add selected class to new div
-		document.getElementById(currentSelected).classList.add('selected')
-	}
 </script>
-
-<main>
-	{#await weather}
-		<h1 id="loading">Loading...</h1>
-	{:then result}
-		<div id="weekly-forecast">
-				{#each weather_array as day, id}
-					{#if id == 0}
-						<div {id} class="day-card selected" on:click={function() {showDetails(id)}}>
-							<div class="day-heading">
-								<h3 class="title">{day.weekday}</h3>
-								<h3 class="subtitle">{day.date}</h3>
-							</div>
-							<div class="day-body">
-								<img class="card-img" src={day.image} alt={day.alt}>
-								<div class="temperature">
-									<i class="fas fa-thermometer-full" style="color: red"></i> {day.high_temp}
-								</div>
-								<div class="temperature">
-									<i class="fas fa-thermometer-quarter" style="color: blue"></i> {day.low_temp}
-								</div>
-							</div>
-						</div>
-					{:else}
-						<div {id} class="day-card" on:click={function() {showDetails(id)}}>
-							<div class="day-heading">
-								<h3 class="title">{day.weekday}</h3>
-								<h3 class="subtitle">{day.date}</h3>
-							</div>
-							<div class="day-body">
-								<img class="card-img" src={day.image} alt={day.alt}>
-								<div class="temperature">
-									<i class="fas fa-thermometer-full" style="color: red"></i> {day.high_temp}
-								</div>
-								<div class="temperature">
-									<i class="fas fa-thermometer-quarter" style="color: blue"></i> {day.low_temp}
-								</div>
-							</div>
-						</div>
-					{/if}
-				{/each}
-			</div>
-		<DetailedSection day={in_depth_weather}/>
-	{/await}
-</main>
 
 <style>
 	#weekly-forecast {
 		display: grid;
 		grid-template-columns: repeat(8, 1fr);
 		grid-gap: 5px;
-	}
-	.day-card {
-		text-align: center;
-		padding-bottom: 1em;
-		background-color: #FBFCFF;
-		border-radius: 10px;
-	}
-	.day-card:hover {
-		background-color: #D0CCD0;
-	}
-	.card-img {
-		width: 120px;
-	}
-	.temperature {
-		padding: 5px;
-		display: inline-block;
-	}
-	i {
-		font-size: 2em;
-	}
-	:global(.selected) {
-		background-color: #D0CCD0!important;
 	}
 	#loading {
 		color: white;
@@ -156,3 +77,16 @@
 		padding: 80px;
 	}
 </style>
+
+<main>
+	{#await weather}
+		<h1 id="loading">Loading...</h1>
+	{:then result}
+		<div id="weekly-forecast">
+				{#each weather_array as day, id}
+					<WeatherCard {id} {day} bind:currentSelected={currentSelected}/>
+				{/each}
+			</div>
+		<DetailedSection bind:day={in_depth_weather}/>
+	{/await}
+</main>
