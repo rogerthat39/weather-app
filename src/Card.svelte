@@ -42,7 +42,8 @@
 	}
 </style>
 
-<div {id} class="day-card" on:click={function() {showDetails(id)}}>
+<!--card html-->
+<div {id} class="day-card {id == 0 ? 'selected' : ''}" on:click={function() {showDetails(id)}}>
   <div class="day-heading">
     <h3 class="title">{day.weekday}</h3>
     <h3 class="subtitle">{day.date}</h3>

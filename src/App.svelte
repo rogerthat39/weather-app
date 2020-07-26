@@ -83,10 +83,10 @@
 		<h1 id="loading">Loading...</h1>
 	{:then result}
 		<div id="weekly-forecast">
-				{#each weather_array as day, id}
-					<WeatherCard {id} {day} bind:currentSelected={currentSelected}/>
-				{/each}
-			</div>
+			{#each weather_array as day, id}
+				<WeatherCard {id} {day} bind:currentSelected={currentSelected}/>
+			{/each}
+		</div>
 		<DetailedSection bind:day={in_depth_weather}/>
 	{/await}
 </main>
