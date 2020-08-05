@@ -10,7 +10,7 @@ npm install
 
 You will need to have a key for the [openweathermap](https://home.openweathermap.org) api - this project uses the "onecall" api which is under the free plan.
 
-Add your key to "src/api-keys.js":
+Add your key to "src/keys.js":
 
 eg. ```export let weather_key = '1234567890';```
 
